@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tracking-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tracking-frontend
+  template:
+    metadata:
+      labels:
+        app: tracking-frontend
+    spec:
+      containers:
+      - name: tracking-frontend
+        image: tracking-frontend:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tracking-frontend-svc
+spec:
+  type: LoadBalancer # Exposes the service externally
+  selector:
+    app: tracking-frontend
+  ports:
+  - port: 80
+    targetPort: 80

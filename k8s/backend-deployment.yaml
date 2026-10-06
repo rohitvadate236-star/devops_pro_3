@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tracking-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tracking-backend
+  template:
+    metadata:
+      labels:
+        app: tracking-backend
+    spec:
+      containers:
+      - name: tracking-backend
+        image: tracking-backend:latest # Build this image locally or replace with your registry
+        imagePullPolicy: Never # For local testing with minikube/docker-desktop
+        ports:
+        - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tracking-backend-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: tracking-backend
+  ports:
+  - port: 5000
+    targetPort: 5000
